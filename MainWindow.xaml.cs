@@ -5,6 +5,7 @@ using System.Windows.Media;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Microsoft.Win32;
 using System.Timers;
+using System.Configuration;
 
 namespace FileCopyApp
 {
@@ -16,6 +17,8 @@ namespace FileCopyApp
         {
             InitializeComponent();
             InitializeTimer();
+            InputFileTextBox.Text = ConfigurationManager.AppSettings["InputFilePath"];
+            OutputFolderTextBox.Text = ConfigurationManager.AppSettings["OutputFolderPath"];
         }
 
         private void InitializeTimer()
@@ -30,25 +33,9 @@ namespace FileCopyApp
         {
             Dispatcher.Invoke(() =>
             {
-                UpdateFileExistenceIndicator();
+                //UpdateFileExistenceIndicator();
+                CheckButtonAvailability();
             });
-        }
-
-        private void UpdateFileExistenceIndicator()
-        {
-            /*if (!string.IsNullOrEmpty(InputFileTextBox.Text) && !string.IsNullOrEmpty(OutputFolderTextBox.Text))
-            {
-                string outputFile = Path.Combine(OutputFolderTextBox.Text, Path.GetFileName(InputFileTextBox.Text));
-                bool fileExistsInOutput = File.Exists(outputFile);
-                FileExistsIndicator.Fill = fileExistsInOutput ? Brushes.LimeGreen : Brushes.LightGray;
-                CheckButtonAvailability();
-            }
-            else
-            {
-                FileExistsIndicator.Fill = Brushes.LightGray;
-                CheckButtonAvailability();
-            }*/
-            CheckButtonAvailability();
         }
 
         private void SelectInputFile_Click(object sender, RoutedEventArgs e)
@@ -57,7 +44,7 @@ namespace FileCopyApp
             if (openFileDialog.ShowDialog() == true)
             {
                 InputFileTextBox.Text = openFileDialog.FileName;
-                //CheckButtonAvailability();
+                SaveSetting("InputFilePath", openFileDialog.FileName);
             }
         }
 
@@ -68,8 +55,16 @@ namespace FileCopyApp
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 OutputFolderTextBox.Text = dialog.FileName;
-                //CheckButtonAvailability();
+                SaveSetting("OutputFolderPath", dialog.FileName);
             }
+        }
+
+        private void SaveSetting(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings[key].Value = value;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
         private void CheckButtonAvailability()
