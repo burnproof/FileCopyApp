@@ -36,7 +36,7 @@ namespace FileCopyApp
 
         private void UpdateFileExistenceIndicator()
         {
-            if (!string.IsNullOrEmpty(InputFileTextBox.Text) && !string.IsNullOrEmpty(OutputFolderTextBox.Text))
+            /*if (!string.IsNullOrEmpty(InputFileTextBox.Text) && !string.IsNullOrEmpty(OutputFolderTextBox.Text))
             {
                 string outputFile = Path.Combine(OutputFolderTextBox.Text, Path.GetFileName(InputFileTextBox.Text));
                 bool fileExistsInOutput = File.Exists(outputFile);
@@ -46,7 +46,9 @@ namespace FileCopyApp
             else
             {
                 FileExistsIndicator.Fill = Brushes.LightGray;
-            }
+                CheckButtonAvailability();
+            }*/
+            CheckButtonAvailability();
         }
 
         private void SelectInputFile_Click(object sender, RoutedEventArgs e)
@@ -72,23 +74,24 @@ namespace FileCopyApp
 
         private void CheckButtonAvailability()
         {
-            if (File.Exists(InputFileTextBox.Text) && Directory.Exists(OutputFolderTextBox.Text))
+            if (File.Exists(InputFileTextBox.Text) && Directory.Exists(OutputFolderTextBox.Text) && InputFileTextBox.Text.Length > 0 && OutputFolderTextBox.Text.Length > 0)
             {
                 string outputFile = Path.Combine(OutputFolderTextBox.Text, Path.GetFileName(InputFileTextBox.Text));
                 bool fileExistsInOutput = File.Exists(outputFile);
+                FileExistsIndicator.Fill = fileExistsInOutput ? Brushes.LimeGreen : Brushes.LightGray;
 
                 if (fileExistsInOutput)
                 {
                     if(OverwriteCheckBox.IsChecked.HasValue && OverwriteCheckBox.IsChecked.Value)
                     {
                         CopyButton.IsEnabled = true;
-                        CopyButton.Content = "Copy File";
+                        CopyButton.Content = $"Copy File!\nFile Exists";
                         CopyButton.Background = Brushes.LimeGreen;
                     }
                     else
                     {
                         CopyButton.IsEnabled = false;
-                        CopyButton.Content = "File Exists";
+                        CopyButton.Content = $"File Exists";
                         CopyButton.Background = Brushes.LightGray;
                     }
                 }
@@ -97,14 +100,33 @@ namespace FileCopyApp
                     CopyButton.IsEnabled = true;
                     CopyButton.Content = "Copy File";
                     CopyButton.Background = Brushes.LimeGreen;
+                    FileExistsIndicator.Fill = Brushes.LightGray;
                 }
             }
             else
             {
                 CopyButton.IsEnabled = false;
-                CopyButton.Content = "Select Input File and Output Folder";
-                CopyButton.Background = Brushes.LightGray;
+                CopyButton.Content = $"Select Input File\nand Output Folder";
+                CopyButton.Background = Brushes.DarkOrange;
                 //FileExistsIndicator.Fill = Brushes.LightGray; // Gray out the indicator
+            }
+
+            if (File.Exists(InputFileTextBox.Text))
+            {
+                InputFileTextBox.BorderBrush = Brushes.Gray;
+            }
+            else
+            {
+                InputFileTextBox.BorderBrush = Brushes.DarkOrange;
+            }
+
+            if (Directory.Exists(OutputFolderTextBox.Text))
+            {
+                OutputFolderTextBox.BorderBrush = Brushes.Gray;
+            }
+            else
+            {
+                OutputFolderTextBox.BorderBrush = Brushes.DarkOrange;
             }
         }
 
