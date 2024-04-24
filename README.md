@@ -8,6 +8,8 @@ Further improvements:
 	- Add a button to open the source file.
 	- Add a mechanism to detect if the destination file is locked by another process and show a message to the user. This can be done by checking if the file is in use before copying and displaying a tooltip message or changing the color of the copy button to yellow.
 	- Add a scaling mechanism so that the app can be resized, hiding the source and destination file paths.
+	- Add a taskbar hover-interface, showing the copy button and the status led. This would allow to hide the app window and still have the copy functionality available. It would work only on non-server environment, as to server we log on through RDP and this type of interface would not be available.
+		- Subnote: Maybe to develop this as a application tray application/menu? I guess that would also work on server? 
 
 Version 1.0.1
 	- Add a mechanism to detect if the source file exists. Currently, if the file is deleted after it has been already selected, the app will not detect it.
