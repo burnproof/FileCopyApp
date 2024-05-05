@@ -17,7 +17,9 @@
     - Add a functionality to move the file instead of copy. That would require a checkbox to select if the file should be moved or copied. This feature would be useful for example when the user has a case, where they constanly receive a new file to certain directory and want to move it from there. 
     - Add functionality to have input path and maybe also the output path as a api paths (though, we are passing to the realms of postman and other great utilities with this). Still it would be useful for some folks. If done, to impement in an API like way, having authentication, GET, POST, PUT, DELETE methods and at least raw headers and body.
     - Add external script execution. Add it to the before and after the file copy. This would allow for example start some service, copy test file and then stop the service. Also, it would allow to do some cleanup and also show the preview result of web build or something similar.
-
+    - Add button to delete destination file if it exists. This would be useful for example when the user wants to delete the file and copy it again.
+    - Add integrated source folder browser. This would allow the user to select the source file by browsing the folder structure. This would allow to switch the source file without opening the explorer file browser.
+    - Add configuration interface. In this interface, user might be able to select the minimal and normal interface's visible elements. This would allow the user to customize the app to their needs.
 
 * Version 1.0.1 *
 	- Add a mechanism to detect if the source file exists. Currently, if the file is deleted after it has been already selected, the app will not detect it.
